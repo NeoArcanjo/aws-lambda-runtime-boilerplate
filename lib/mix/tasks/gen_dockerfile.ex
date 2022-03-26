@@ -39,13 +39,13 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
     erl_version = Keyword.get(opts, :erlang, "24.3.2")
 
     Mix.Generator.create_file(
-      "images/base.Dockerfile",
-      dockerfile_template(:base, iex_version, erl_version)
+      "Dockerfile",
+      dockerfile_template(:app, name)
     )
 
     Mix.Generator.create_file(
-      "Dockerfile",
-      dockerfile_template(:app, name)
+      "images/base.Dockerfile",
+      dockerfile_template(:base, iex_version, erl_version)
     )
   end
 
