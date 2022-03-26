@@ -8,18 +8,18 @@ base: .make/base
 build: .make/build
 
 run: .make/build
-  docker run -it erlambda $(CMD)
+	docker run -it erlambda $(CMD)
 
 bind: .make/base
-  docker run -it --mount type=bind,source=$(shell pwd),target=/bind elixirbase sh -ec "cd /bind/$(WD); $(CMD)"
+	docker run -it --mount type=bind,source=$(shell pwd),target=/bind elixirbase sh -ec "cd /bind/$(WD); $(CMD)"
 
 .make/build: .make/base Dockerfile $(PROJECTFILES)
-  docker build -t erlambda .
-  date > .make/build
+	docker build -t erlambda .
+	date > .make/build
 
 .make/base: .make images/base.Dockerfile
-  docker build -t elixirbase -f $(shell pwd)/images/base.Dockerfile .
-  date > .make/base
+	docker build -t elixirbase -f $(shell pwd)/images/base.Dockerfile .
+	date > .make/base
 
 .make:
-  mkdir -p .make
+	mkdir -p .make
