@@ -19,3 +19,5 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/aws_runtime>.
 
+
+Source: "https://bernerbits.medium.com/erlang-and-elixir-in-aws-lambda-using-container-images-part-2-ad7b9863cfd4"
