@@ -40,11 +40,16 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
 
     Mix.Generator.create_file(
       "images/base.Dockerfile",
-      dockerfile_template(name, iex_version, erl_version)
+      dockerfile_template(:base, iex_version, erl_version)
+    )
+
+    Mix.Generator.create_file(
+      "Dockerfile",
+      dockerfile_template(:app, name)
     )
   end
 
-  defp dockerfile_template(app, iex_version, erl_version) do
+  defp dockerfile_template(:base, iex_version, erl_version) do
     """
     FROM public.ecr.aws/amazonlinux/amazonlinux:latest as root
 
@@ -95,7 +100,11 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
     ENV PATH="$PATH:/opt/erlang/bin:/opt/erlang/lib:/opt/elixir/bin:/opt/elixir/lib"
     RUN mix local.hex --force
     RUN epmd -daemon
+    """
+  end
 
+  defp dockerfile_template(:app, app) do
+    """
     FROM elixirbase:latest
 
     ENV MIX_ENV=dev

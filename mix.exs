@@ -4,7 +4,7 @@ defmodule AwsRuntime.MixProject do
   def project do
     [
       app: :aws_runtime,
-      version: "0.1.2",
+      version: "0.1.3-alpha",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
