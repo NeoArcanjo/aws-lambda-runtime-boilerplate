@@ -1,23 +1,50 @@
-defmodule Mix.Tasks.AWS.Gen.Dockerfile do
+defmodule Mix.Tasks.Aws.Gen.Dockerfile do
   @moduledoc """
-  Generate a distillery release configuration file for lambda release builds.
+  Generate a Dockerfile for the AWS Lambda runtime.
   """
 
   use Mix.Task
 
-  @shortdoc "Generate a distillery release for AWS Lambda"
-  def run(args \\ []) do
-    IO.inspect(args)
+  @shortdoc "Generate a Dockerfile for the project"
+
+  def run(args \\ [])
+
+  def run(["help"]) do
+    """
+    Generate a Dockerfile for the project.
+    """
+  end
+
+  def run(args) do
     # todo: obter do cli a elixir version e erlang version
     name =
       Mix.Project.config()
       |> Keyword.fetch!(:app)
       |> to_string
 
-    Mix.Generator.create_file("images/base.Dockerfile", dockerfile_template(name))
+    {opts, _, _} =
+      OptionParser.parse(args,
+        aliases: [
+          iex: :elixir,
+          iex_version: :elixir,
+          elixir_version: :elixir,
+          erl: :erlang,
+          erl_version: :erlang,
+          erlang_version: :erlang
+        ],
+        strict: [elixir: :string, erlang: :string]
+      )
+
+    iex_version = Keyword.get(opts, :elixir, "1.13.1")
+    erl_version = Keyword.get(opts, :erlang, "24.0.2")
+
+    Mix.Generator.create_file(
+      "images/base.Dockerfile",
+      dockerfile_template(name, iex_version, erl_version)
+    )
   end
 
-  defp dockerfile_template(app) do
+  defp dockerfile_template(app, iex_version, erl_version) do
     """
     FROM public.ecr.aws/amazonlinux/amazonlinux:latest as root
 
@@ -26,15 +53,16 @@ defmodule Mix.Tasks.AWS.Gen.Dockerfile do
     RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
     RUN yum install ncurses-libs openssl-libs flex java-1.8.0-openjdk libxslt fop -y
 
-    ENV LANG=c.UTF-8 \
-        LC_COLLATE="en_US.UTF-8" \
-        LC_CTYPE="en_US.UTF-8" \
-        LC_MESSAGES="en_US.UTF-8" \
-        LC_MONETARY="en_US.UTF-8" \
-        LC_NUMERIC="en_US.UTF-8" \
-        LC_TIME="en_US.UTF-8" \
-        LC_ALL="en_US.UTF-8" \
-        ELIXIR_VERSION="v1.13.3"
+    ENV LANG=c.UTF-8
+    ENV LC_COLLATE="en_US.UTF-8"
+    ENV LC_CTYPE="en_US.UTF-8"
+    ENV LC_MESSAGES="en_US.UTF-8"
+    ENV LC_MONETARY="en_US.UTF-8"
+    ENV LC_NUMERIC="en_US.UTF-8"
+    ENV LC_TIME="en_US.UTF-8"
+    ENV LC_ALL="en_US.UTF-8"
+    ENV ELIXIR_VERSION="v#{iex_version}"
+    ENV OTP_VERSION="OTP-#{erl_version}"
 
     FROM root as buildelixir
 
@@ -45,7 +73,7 @@ defmodule Mix.Tasks.AWS.Gen.Dockerfile do
 
     ENV ERL_TOP=/erlang
     WORKDIR /erlang
-    RUN git checkout OTP-24.3.2
+    RUN git checkout $OTP_VERSION
     RUN ./configure --prefix=/opt/erlang
     RUN make
     RUN make release_tests
