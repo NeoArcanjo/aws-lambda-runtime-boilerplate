@@ -48,10 +48,8 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
       dockerfile_template(:base, iex_version, erl_version)
     )
 
-    System.cmd("cat", ["./.gitignore"])
-    |> IO.inspect()
-
-    IO.inspect(1)
+    Mix.Generator.copy_file(".gitignore", ".dockerignore")
+    File.write!(".dockerignore", dockerignore(), [:append])
   end
 
   defp dockerfile_template(:base, iex_version, erl_version) do
@@ -120,6 +118,22 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
     RUN mix deps.get
     RUN mix compile
     CMD mix app.start
+    """
+  end
+
+  defp dockerignore do
+    """
+    /.make/
+    /images/
+    Dockerfile
+    .dockerignore
+    .gitignore
+    Makefile
+    README.md
+
+    # IntelliJ files
+    /.idea/
+    \*.iml
     """
   end
 end
