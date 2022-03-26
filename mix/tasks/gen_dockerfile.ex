@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.GenDockerfile do
+defmodule Mix.Tasks.AWS.Gen.Dockerfile do
   @moduledoc """
   Generate a distillery release configuration file for lambda release builds.
   """
