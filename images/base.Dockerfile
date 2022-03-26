@@ -13,8 +13,8 @@ ENV LC_MONETARY="en_US.UTF-8"
 ENV LC_NUMERIC="en_US.UTF-8"
 ENV LC_TIME="en_US.UTF-8"
 ENV LC_ALL="en_US.UTF-8"
-ENV ELIXIR_VERSION="v1.13.3"
-ENV OTP_VERSION="24.3.2"
+ENV ELIXIR_VERSION="v1.13.1"
+ENV OTP_VERSION="OTP-24.0.2"
 
 FROM root as buildelixir
 
@@ -25,7 +25,7 @@ RUN git clone https://github.com/elixir-lang/elixir.git
 
 ENV ERL_TOP=/erlang
 WORKDIR /erlang
-RUN git checkout OTP-$OTP_VERSION
+RUN git checkout $OTP_VERSION
 RUN ./configure --prefix=/opt/erlang
 RUN make
 RUN make release_tests

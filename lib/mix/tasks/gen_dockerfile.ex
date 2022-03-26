@@ -36,7 +36,7 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
       )
 
     iex_version = Keyword.get(opts, :elixir, "1.13.1")
-    erl_version = Keyword.get(opts, :erlang, "24.0.2")
+    erl_version = Keyword.get(opts, :erlang, "24.3.2")
 
     Mix.Generator.create_file(
       "images/base.Dockerfile",
@@ -95,6 +95,17 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
     ENV PATH="$PATH:/opt/erlang/bin:/opt/erlang/lib:/opt/elixir/bin:/opt/elixir/lib"
     RUN mix local.hex --force
     RUN epmd -daemon
+
+    FROM elixirbase:latest
+
+    ENV MIX_ENV=dev
+
+    COPY . /#{app}
+    WORKDIR /#{app}
+
+    RUN mix deps.get
+    RUN mix compile
+    CMD mix app.start
     """
   end
 end
