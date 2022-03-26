@@ -47,6 +47,11 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
       "images/base.Dockerfile",
       dockerfile_template(:base, iex_version, erl_version)
     )
+
+    System.cmd("cat", ["./.gitignore"])
+    |> IO.inspect()
+
+    IO.inspect(1)
   end
 
   defp dockerfile_template(:base, iex_version, erl_version) do
