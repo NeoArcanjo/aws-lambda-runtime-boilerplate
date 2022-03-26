@@ -16,7 +16,6 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
   end
 
   def run(args) do
-    # todo: obter do cli a elixir version e erlang version
     name =
       Mix.Project.config()
       |> Keyword.fetch!(:app)
