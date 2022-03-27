@@ -16,11 +16,6 @@ defmodule Mix.Tasks.Aws.Gen.Makefile do
   end
 
   def run(_args) do
-    # name =
-    #   Mix.Project.config()
-    #   |> Keyword.fetch!(:app)
-    #   |> to_string
-
     # {opts, _, _} =
     #   OptionParser.parse(args,
     #     aliases: [
@@ -28,6 +23,7 @@ defmodule Mix.Tasks.Aws.Gen.Makefile do
     #     ],
     #     strict: []
     #   )
+
     path = Application.app_dir(:aws_runtime, "priv/templates")
     Mix.Generator.copy_template(Path.join(path, "makefile.eex"), "Makefile", [])
   end

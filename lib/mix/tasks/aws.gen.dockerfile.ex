@@ -16,11 +16,6 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
   end
 
   def run(args) do
-    name =
-      Mix.Project.config()
-      |> Keyword.fetch!(:app)
-      |> to_string
-
     {opts, _, _} =
       OptionParser.parse(args,
         aliases: [
@@ -31,11 +26,13 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
           erl_version: :erlang,
           erlang_version: :erlang
         ],
-        strict: [elixir: :string, erlang: :string]
+        strict: [elixir: :string, erlang: :string, name: :string]
       )
 
     iex_version = Keyword.get(opts, :elixir, "1.13.1")
     erl_version = Keyword.get(opts, :erlang, "24.3.2")
+    name = Keyword.get(opts, :name, get_name())
+
     path = Application.app_dir(:aws_runtime, "priv/templates")
     Mix.Generator.copy_template(Path.join(path, "dockerfile.eex"), "Dockerfile", app: name)
 
@@ -63,4 +60,10 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
     \*.iml
     """
   end
+
+  defp get_name,
+    do:
+      Mix.Project.config()
+      |> Keyword.fetch!(:app)
+      |> to_string
 end
