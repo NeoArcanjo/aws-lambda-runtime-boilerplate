@@ -61,8 +61,8 @@ defmodule Mix.Tasks.Aws.Gen.Makefile do
     #     strict: []
     #   )
 
-    Mix.Generator.copy_template(makefile_text(), "Makefile.1", [])
-	# Mix.Generator.copy_template("templates/makefile.eex", "Makefile.2", [])
+    # Mix.Generator.copy_template(makefile_text(), "Makefile.1", [])
+	Mix.Generator.copy_template("templates/makefile.eex", "Makefile.2", [])
     Mix.Generator.create_file(
       "Makefile",
       makefile_text()
