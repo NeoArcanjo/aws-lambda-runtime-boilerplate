@@ -1,11 +1,11 @@
 defmodule Mix.Tasks.GenLambdaRelease do
   @moduledoc """
-  Generate a distillery release configuration file for lambda release builds.
+  Generate a release configuration file for lambda release builds.
   """
 
   use Mix.Task
 
-  @shortdoc "Generate a distillery release for AWS Lambda"
+  @shortdoc "Generate a release for AWS Lambda"
   def run(_) do
     name =
       Mix.Project.config()
