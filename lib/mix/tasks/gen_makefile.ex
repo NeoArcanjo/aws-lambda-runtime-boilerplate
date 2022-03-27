@@ -68,34 +68,4 @@ defmodule Mix.Tasks.Aws.Gen.Makefile do
       makefile_text()
     )
   end
-
-#   defp makefile_template do
-#     """
-#     CMD?=
-#     WD?=
-
-#     PROJECTFILES=$(shell ls -1 *.ex{s,}) $(shell find lib src test -type f)
-#     .PHONY: run base bind
-
-#     base: .make/base
-#     build: .make/build
-
-#     run: .make/build
-#     \tdocker run -it erlambda $(CMD)
-
-#     bind: .make/base
-#     \tdocker run -it --mount type=bind,source=$(shell pwd),target=/bind elixirbase sh -ec "cd /bind/$(WD); $(CMD)"
-
-#     .make/build: .make/base Dockerfile $(PROJECTFILES)
-#     \tdocker build -t erlambda .
-#     \tdate > .make/build
-
-#     .make/base: .make images/base.Dockerfile
-#     \tdocker build -t elixirbase -f $(shell pwd)/images/base.Dockerfile .
-#     \tdate > .make/base
-
-#     .make:
-#     \tmkdir -p .make
-#     """
-#   end
 end
