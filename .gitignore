@@ -24,3 +24,7 @@ aws_runtime-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+/images/
+Dockerfile
+.dockerignore
+Makefile
