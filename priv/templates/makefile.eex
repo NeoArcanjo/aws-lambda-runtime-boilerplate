@@ -2,7 +2,7 @@ CMD?=
 WD?=
 
 PROJECTFILES=$(shell ls -1 *.ex{s,}) $(shell find lib src test -type f)
-.PHONY: run base bind
+.PHONY: run base bind recache doc
 
 base: .make/base
 build: .make/build
@@ -13,7 +13,14 @@ run: .make/build
 bind: .make/base
 	docker run -it --mount type=bind,source=$(shell pwd),target=/bind elixirbase sh -ec "cd /bind/$(WD); $(CMD)"
 
-.make/build: .make/base Dockerfile $(PROJECTFILES)
+recache:
+	rm .make/cache .make/build
+	make .make/cache
+
+doc: .make/build $(PROJECTFILES)
+	docker run -it --mount type=bind,source=$(shell pwd),target=/bind erlambda sh -ec "mix docs; cp -rf /<%= @app %>/doc /bind/doc"
+
+.make/build: .make/cache Dockerfile project $(PROJECTFILES)
 	docker build -t erlambda .
 	date > .make/build
 
@@ -23,3 +30,7 @@ bind: .make/base
 
 .make:
 	mkdir -p .make
+
+.make/cache: .make/base images/cache.Dockerfile
+	docker build -t elixircache -f $(shell pwd)/images/cache.Dockerfile .
+	date > .make/cache

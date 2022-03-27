@@ -35,5 +35,8 @@ defmodule Mix.Tasks.Aws.Lambda.New do
     else
       Mix.shell().cmd("make bind CMD=\"mix new #{name}\"")
     end
+
+    Mix.shell().cmd("cp -rv #{name}/* #{name}/.* .")
+    Mix.shell().cmd("rm -rf #{name}")
   end
 end
