@@ -51,7 +51,7 @@ defmodule AwsRuntime.MixProject do
       # This option is only needed when you don't want to use the OTP application name
       name: "aws_runtime",
       # These are the default files included in the package
-      files: ~w(lib .formatter.exs mix.exs README* LICENSE* CHANGELOG*),
+      files: ~w(lib priv .formatter.exs mix.exs README* LICENSE* CHANGELOG*),
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => "https://github.com/NeoArcanjo/aws-lambda-runtime-boilerplate"}
     ]

@@ -28,7 +28,7 @@ defmodule Mix.Tasks.Aws.Gen.Makefile do
     #     ],
     #     strict: []
     #   )
-
-    Mix.Generator.copy_template("lib/templates/makefile.eex", "Makefile", [])
+    path = Application.app_dir(:aws_runtime, "priv/templates")
+    Mix.Generator.copy_template(Path.join(path, "makefile.eex"), "Makefile", [])
   end
 end
