@@ -31,7 +31,7 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
 
     iex_version = Keyword.get(opts, :elixir, "1.13.1")
     erl_version = Keyword.get(opts, :erlang, "24.3.2")
-    name = Keyword.get(opts, :name, get_name())
+    name = Keyword.get(opts, :name) || get_name()
 
     path = Application.app_dir(:aws_runtime, "priv/templates")
     Mix.Generator.copy_template(Path.join(path, "dockerfile.eex"), "Dockerfile", app: name)
@@ -46,25 +46,6 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
       elixir_version: iex_version,
       otp_version: erl_version
     )
-
-    Mix.Generator.copy_file(".gitignore", ".dockerignore")
-    File.write!(".dockerignore", dockerignore(), [:append])
-  end
-
-  defp dockerignore do
-    """
-    /.make/
-    /images/
-    Dockerfile
-    .dockerignore
-    .gitignore
-    Makefile
-    README.md
-
-    # IntelliJ files
-    /.idea/
-    \*.iml
-    """
   end
 
   defp get_name,

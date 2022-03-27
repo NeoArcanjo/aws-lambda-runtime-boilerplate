@@ -38,5 +38,6 @@ defmodule Mix.Tasks.Aws.Lambda.New do
 
     Mix.shell().cmd("cp -rv #{name}/* #{name}/.* .")
     Mix.shell().cmd("rm -rf #{name}")
+    Mix.Tasks.Aws.Gen.Dockerignore.run([])
   end
 end
