@@ -4,6 +4,7 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
   """
 
   use Mix.Task
+  import AwsRuntime.Helpers
 
   @shortdoc "Generate a Dockerfile for the project"
 
@@ -35,22 +36,19 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
 
     path = Application.app_dir(:aws_runtime, "priv/templates")
     Mix.Generator.copy_template(Path.join(path, "dockerfile.eex"), "Dockerfile", app: name)
+    |> IO.inspect()
 
     Mix.Generator.copy_template(
       Path.join(path, "cache.dockerfile.eex"),
       "images/cache.Dockerfile",
       app: name
     )
+    |> IO.inspect()
 
     Mix.Generator.copy_template(Path.join(path, "base.dockerfile.eex"), "images/base.Dockerfile",
       elixir_version: iex_version,
       otp_version: erl_version
-    )
-  end
+    )    |> IO.inspect()
 
-  defp get_name,
-    do:
-      Mix.Project.config()
-      |> Keyword.fetch!(:app)
-      |> to_string
+  end
 end

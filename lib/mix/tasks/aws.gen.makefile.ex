@@ -4,6 +4,7 @@ defmodule Mix.Tasks.Aws.Gen.Makefile do
   """
 
   use Mix.Task
+  import AwsRuntime.Helpers
 
   @shortdoc "Generate a Makefile for the project"
 
@@ -15,16 +16,18 @@ defmodule Mix.Tasks.Aws.Gen.Makefile do
     """
   end
 
-  def run(_args) do
-    # {opts, _, _} =
-    #   OptionParser.parse(args,
-    #     aliases: [
+  def run(args) do
+    {opts, _, _} =
+      OptionParser.parse(args,
+        aliases: [
+          n: :name
+        ],
+        strict: [name: :string]
+      )
 
-    #     ],
-    #     strict: []
-    #   )
+    name = Keyword.get(opts, :name) || get_name()
 
     path = Application.app_dir(:aws_runtime, "priv/templates")
-    Mix.Generator.copy_template(Path.join(path, "makefile.eex"), "Makefile", [])
+    Mix.Generator.copy_template(Path.join(path, "makefile.eex"), "Makefile", [app: name])
   end
 end

@@ -26,18 +26,27 @@ defmodule Mix.Tasks.Aws.Lambda.New do
 
     name = Keyword.get(opts, :name, "lambda")
     sup = Keyword.get(opts, :sup, false)
-
-    Mix.Tasks.Aws.Gen.Dockerfile.run(["--name", name])
-    Mix.Tasks.Aws.Gen.Makefile.run([])
-
+    # Mix.Generator.create_directory(name)
     if sup do
-      Mix.shell().cmd("make bind CMD=\"mix new #{name} --sup\"")
+      Mix.shell().cmd("mix new #{name} --sup")
     else
-      Mix.shell().cmd("make bind CMD=\"mix new #{name}\"")
+      Mix.shell().cmd("mix new #{name}")
     end
 
-    Mix.shell().cmd("cp -rv #{name}/* #{name}/.* .")
-    Mix.shell().cmd("rm -rf #{name}")
+    File.cd!(name)|> IO.inspect()
+
+    Mix.Tasks.Aws.Gen.Dockerfile.run(["--name", name])
+    Mix.Tasks.Aws.Gen.Makefile.run(["--name", name])
+
+    # if sup do
+    #   Mix.shell().cmd("make bind CMD=\"mix new #{name} --sup\"")
+    # else
+    #   Mix.shell().cmd("make bind CMD=\"mix new #{name}\"")
+    # end
+
+    # Mix.shell().cmd("cp -rv #{name}/* #{name}/.* .")
+    # Mix.shell().cmd("rm -rf #{name}")
+    Mix.Generator.create_directory("src")
     Mix.Tasks.Aws.Gen.Dockerignore.run([])
   end
 end

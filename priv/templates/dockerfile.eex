@@ -14,7 +14,7 @@ FROM elixircache:latest
 ENV MIX_ENV=dev
 
 COPY . /<%= @app %>
-COPY --from=elixircache:latest /<%= @app %>/_build /<%= @app %>/dep[s] /<%= @app %>/mix.loc[k] /<%= @app %>
+COPY --from=elixircache:latest /<%= @app %>/_build /<%= @app %>/dep[s] /<%= @app %>/mix.loc[k] /<%= @app %>/
 WORKDIR /<%= @app %>
 
 RUN mix deps.get
