@@ -28,3 +28,4 @@ aws_runtime-*.tar
 Dockerfile
 .dockerignore
 Makefile
+/testando/
