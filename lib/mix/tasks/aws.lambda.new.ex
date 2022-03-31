@@ -33,7 +33,7 @@ defmodule Mix.Tasks.Aws.Lambda.New do
       Mix.shell().cmd("mix new #{name}")
     end
 
-    File.cd!(name)|> IO.inspect()
+    File.cd!(name) |> IO.inspect()
 
     Mix.Tasks.Aws.Gen.Dockerfile.run(["--name", name])
     Mix.Tasks.Aws.Gen.Makefile.run(["--name", name])

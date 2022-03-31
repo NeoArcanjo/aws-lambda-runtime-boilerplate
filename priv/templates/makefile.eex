@@ -20,7 +20,7 @@ recache:
 doc: .make/build $(PROJECTFILES)
 	docker run -it --mount type=bind,source=$(shell pwd),target=/bind erlambda sh -ec "mix docs; cp -rf /<%= @app %>/doc /bind/doc"
 
-.make/build: .make/cache Dockerfile project $(PROJECTFILES)
+.make/build: .make/cache Dockerfile $(PROJECTFILES)
 	docker build -t erlambda .
 	date > .make/build
 

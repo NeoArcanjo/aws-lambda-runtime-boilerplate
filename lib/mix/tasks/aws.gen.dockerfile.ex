@@ -35,6 +35,7 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
     name = Keyword.get(opts, :name) || get_name()
 
     path = Application.app_dir(:aws_runtime, "priv/templates")
+
     Mix.Generator.copy_template(Path.join(path, "dockerfile.eex"), "Dockerfile", app: name)
     |> IO.inspect()
 
@@ -48,7 +49,7 @@ defmodule Mix.Tasks.Aws.Gen.Dockerfile do
     Mix.Generator.copy_template(Path.join(path, "base.dockerfile.eex"), "images/base.Dockerfile",
       elixir_version: iex_version,
       otp_version: erl_version
-    )    |> IO.inspect()
-
+    )
+    |> IO.inspect()
   end
 end

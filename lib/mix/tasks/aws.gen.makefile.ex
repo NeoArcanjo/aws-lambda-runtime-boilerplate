@@ -28,6 +28,6 @@ defmodule Mix.Tasks.Aws.Gen.Makefile do
     name = Keyword.get(opts, :name) || get_name()
 
     path = Application.app_dir(:aws_runtime, "priv/templates")
-    Mix.Generator.copy_template(Path.join(path, "makefile.eex"), "Makefile", [app: name])
+    Mix.Generator.copy_template(Path.join(path, "makefile.eex"), "Makefile", app: name)
   end
 end
