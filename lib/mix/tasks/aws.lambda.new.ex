@@ -5,7 +5,7 @@ defmodule Mix.Tasks.Aws.Lambda.New do
 
   use Mix.Task
 
-  @shortdoc "Generate a Makefile for the project"
+  @shortdoc "Generate a elixir project"
 
   def run([]) do
     Mix.shell().info("Like mix new, but for AWS Lambda.")
